@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace TourAssitantWeb.Models
+namespace TourWebApp.Models
 {
     public class Admin : User
     {

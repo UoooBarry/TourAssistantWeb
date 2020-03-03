@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using TourAssitantWeb.Models;
+using TourWebApp.Models;
 
-namespace TourAssitantWeb.Data
+namespace TourWebApp.Data
 {
     public class TourContext : DbContext
     {

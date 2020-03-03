@@ -1,6 +1,6 @@
 using System;
 
-namespace TourAssitantWeb.Models
+namespace TourWebApp.Models
 {
     public class ErrorViewModel
     {
