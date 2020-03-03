@@ -6,12 +6,6 @@ using System.Threading.Tasks;
 
 namespace TourWebApp.Models
 {
-    public enum Coordinate 
-    {
-        X,
-        Y
-    }
-
     public class Location
     {
         public int LocationID { get; set; }
@@ -19,7 +13,10 @@ namespace TourWebApp.Models
         [Required, StringLength(50)]
         public string Name { get; set; }
         [Required]
-        public Dictionary<Coordinate,float> Coordinate { get; set; }
+        public float X { get; set; }
+        [Required]
+        public float Y { get; set; }
+
 
         [Required, StringLength(300)]
         public string Description { get; set; }
