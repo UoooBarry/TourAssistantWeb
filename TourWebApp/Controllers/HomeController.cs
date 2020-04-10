@@ -23,7 +23,7 @@ namespace TourWebApp.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> IndexAsync(int loginID, string password)
+        public async Task<IActionResult> Index(int loginID, string password)
         {
             var login = await _context.Logins.FindAsync(loginID);
             if (login == null || !PBKDF2.Verify(login.PasswordHash, password)) 
