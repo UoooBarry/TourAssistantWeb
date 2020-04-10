@@ -1,28 +1,28 @@
 ﻿using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using SimpleHashing;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TourWebApp.Data;
 
 namespace TourWebApp.ConsoleApp
 {
+
     public class View
     {
+        IServiceProvider serviceProvider;
+
+        public View(IServiceProvider serviceProvider) 
+        {
+            this.serviceProvider = serviceProvider;
+        }
         public void Display()
         {
-            String output = "";
-            string connetionString = @"Server=s3673712.database.windows.net;Database=SEPM;uid=s3673712;pwd=Bach12345;MultipleActiveResultSets=true";
-            SqlConnection connect = new SqlConnection(connetionString);
-            connect.Open();
-            SqlCommand command = new SqlCommand("Select LoginID,UserID from dbo.Logins", connect);
-            SqlDataReader dr = command.ExecuteReader();
-            while (dr.Read()) {
-                
-                output = output + "LoginID: " + dr.GetValue(0) + " - UserID: " + dr.GetValue(1);
-            }
             while (true)
             {
-                Console.WriteLine(output);
                 Console.Write(
  @"==============================================
 WELCOME TO Tour Management System
@@ -41,7 +41,18 @@ Select the application that want to run
                 switch (number)
                 {
                     case 1:
-                   
+                        Console.WriteLine("Input an ID");
+                        int ID = int.Parse(Console.ReadLine());
+                        Console.WriteLine("Input an password");
+                        string password = Console.ReadLine();
+                        if (Login(ID, password).Result)
+                        {
+                            Console.WriteLine("true");
+                        }
+                        else 
+                        {
+                            Console.WriteLine("false");
+                        }
                         break;
                     case 2:
                         return;
@@ -54,6 +65,19 @@ Select the application that want to run
                 }
 
 
+            }
+        }
+
+        public async Task<bool> Login(int ID, string password)
+        {
+            using var context = new TourContext(serviceProvider.GetRequiredService<DbContextOptions<TourContext>>());
+            var login = await context.Logins.FindAsync(ID);
+            if (login == null || !PBKDF2.Verify(login.PasswordHash, password))
+            {
+                return false;
+            }
+            else {
+                return true;
             }
         }
     }
