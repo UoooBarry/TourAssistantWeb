@@ -108,7 +108,7 @@ Select the application that want to run
                        
                             break;
                         case 3:
-                       
+                            AddLocations();
                             break;
                         case 4:
                         
@@ -128,7 +128,47 @@ Select the application that want to run
             else
                 Console.WriteLine("Login Fail");
         }
-        
+        private void AddLocations() {
+            while (true)
+            {
+                Console.WriteLine("Enter name:");
+                string tourName = Console.ReadLine();
+                Console.WriteLine("Enter coordination X:");
+                string x = Console.ReadLine();
+                Console.WriteLine("Enter coordination Y:");
+                string y = Console.ReadLine();
+                Console.WriteLine("Enter Description:");
+                string d = Console.ReadLine();
+                Console.WriteLine("Enter duration:");
+                string t = Console.ReadLine();
+                SqlCommand command = getSQLCommand();
+                command.CommandText = "insert into dbo.Locations(TourID, Name, X, Y, Description, MinTime) values(111, @Name, @X, @Y, @Description, @MinTime)";
+                command.Parameters.AddWithValue("Name", tourName);
+                command.Parameters.AddWithValue("X", x);
+                command.Parameters.AddWithValue("Y", y);
+                command.Parameters.AddWithValue("Description", d);
+                command.Parameters.AddWithValue("MinTime", TimeSpan.Parse(t));
+                command.ExecuteNonQuery();
+                break;
+            }
+
+        }
+        protected SqlCommand getSQLCommand()
+        {
+
+            var command = GetConnection().CreateCommand();
+            return command;
+        }
+        protected SqlConnection GetConnection()
+        {
+            var db = new SqlConnection(getConnectionString());
+            db.Open();
+            return db;
+        }
+        protected string getConnectionString()
+        {
+            return @"Server=s3673712.database.windows.net;Database=SEPM;uid=s3673712;pwd=Bach12345;MultipleActiveResultSets=true";
+        }
 
     }
 
