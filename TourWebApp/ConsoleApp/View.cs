@@ -41,18 +41,7 @@ Select the application that want to run
                 switch (number)
                 {
                     case 1:
-                        Console.WriteLine("Input an ID");
-                        int ID = int.Parse(Console.ReadLine());
-                        Console.WriteLine("Input an password");
-                        string password = Console.ReadLine();
-                        if (Login(ID, password).Result)
-                        {
-                            Console.WriteLine("true");
-                        }
-                        else 
-                        {
-                            Console.WriteLine("false");
-                        }
+                        displayMenu();
                         break;
                     case 2:
                         return;
@@ -80,6 +69,67 @@ Select the application that want to run
                 return true;
             }
         }
+        public void displayMenu()
+        {
+            Console.WriteLine("");
+            Console.WriteLine("Input an ID");
+            int ID = int.Parse(Console.ReadLine());
+            Console.WriteLine("Input an password");
+            string password = Console.ReadLine();
+            if (Login(ID, password).Result)
+            {
+                Console.WriteLine("You are now login");
+                while (true)
+                {
+                    Console.WriteLine(
+        @"Select the application that want to run
+=========================================
+1. View Locations
+2. View Tours
+3. Add Locations
+4. Add Tours
+5. Log out
+");
+                    var selection = Console.ReadLine();
+                    Console.WriteLine("");
+
+                    int number;
+                    if (!Int32.TryParse(selection, out number))
+                    {
+                        Console.Write("Invalid intput");
+                        continue;
+                    }
+                    switch (number)
+                    {
+                        case 1:
+                         
+                            break;
+                        case 2:
+                       
+                            break;
+                        case 3:
+                       
+                            break;
+                        case 4:
+                        
+                            break;
+                        case 5:
+                            
+                            return;
+                        default:
+                            Console.WriteLine("Invalid Input");
+                            Console.WriteLine("Press any key to go back . . .");
+                            Console.ReadKey();
+                            Console.WriteLine("");
+                            break;
+                    }
+                }
+            }
+            else
+                Console.WriteLine("Login Fail");
+        }
+        
+
     }
-   
+
 }
