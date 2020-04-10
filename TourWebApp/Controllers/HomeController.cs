@@ -1,17 +1,20 @@
 ﻿using System.Diagnostics;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using SimpleHashing;
+using TourWebApp.Data;
 using TourWebApp.Models;
 
 namespace TourWebApp.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly TourContext _context;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(TourContext context)
         {
-            _logger = logger;
+            _context = context;
         }
 
         public IActionResult Index()
@@ -19,6 +22,18 @@ namespace TourWebApp.Controllers
             return View();
         }
 
+        [HttpPost]
+        public async Task<IActionResult> IndexAsync(int loginID, string password)
+        {
+            var login = await _context.Logins.FindAsync(loginID);
+            if (login == null || !PBKDF2.Verify(login.PasswordHash, password)) 
+            {
+                ModelState.AddModelError("LoginFailed", "Login failed, please try again.");
+                return View(new Login { LoginID = loginID });
+            }
+
+            return View();
+        }
         public IActionResult Privacy()
         {
             return View();

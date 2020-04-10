@@ -12,5 +12,6 @@ namespace TourWebApp.Models
 
         [Required, StringLength(50)]
         public string Label { get; set; }
+
     }
 }

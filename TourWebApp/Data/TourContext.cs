@@ -12,8 +12,7 @@ namespace TourWebApp.Data
         public TourContext(DbContextOptions<TourContext> options) : base(options)
         { }
 
-        public DbSet<Admin> Admins { get; set; }
-        public DbSet<Assistant> Assistants { get; set; }
+        public DbSet<User> Users { get; set; }
         public DbSet<Location> Locations { get; set; }
         public DbSet<Login> Logins { get; set; }
 

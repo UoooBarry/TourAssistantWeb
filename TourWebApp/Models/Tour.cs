@@ -14,6 +14,7 @@ namespace TourWebApp.Models
         public string Name { get; set; }
 
         [Required]
+        public int TourTypeID { get; set; }
         public virtual TourType Type { get; set; }
 
         [Required]
