@@ -29,7 +29,7 @@ namespace TourWebApp.Data
                 HasOne<TourType>(e => e.Type).WithMany(e => e.Tour).HasForeignKey(e=> e.TourID);
             builder.Entity<Login>().
                 HasOne<User>(e => e.user).WithOne(e => e.Login).HasForeignKey<Login>(e => e.UserID);
-            
+
             //Tour_Location
             builder.Entity<Location_Tour>()
                 .HasOne<Tour>(e => e.Tour)

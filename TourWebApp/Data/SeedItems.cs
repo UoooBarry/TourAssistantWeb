@@ -42,6 +42,29 @@ namespace TourWebApp.Data
                 }
 
             );
+
+            context.Locations.AddRange
+            (
+                new Location
+                {
+                    LocationID = 2,
+                    Name = "Music ground",
+                    X = 3,
+                    Y = 4,
+                    Description = "A place that you can play music",
+                    MinTime = new TimeSpan(0,10,0), //10 mins
+
+                },
+                new Location
+                {
+                    LocationID = 1,
+                    Name = "Photo area",
+                    X = 3,
+                    Y = 4,
+                    Description = "A place that you can take photo",
+                    MinTime = new TimeSpan(0, 10, 0), //10 mins
+                }
+            );
             context.SaveChanges();
         }
 

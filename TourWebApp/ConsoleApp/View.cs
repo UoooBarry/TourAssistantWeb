@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TourWebApp.Data;
+using TourWebApp.Models;
 
 namespace TourWebApp.ConsoleApp
 {
@@ -102,7 +103,7 @@ Select the application that want to run
                     switch (number)
                     {
                         case 1:
-                         
+                            Console.WriteLine(GetLocations());
                             break;
                         case 2:
                        
@@ -127,6 +128,18 @@ Select the application that want to run
             }
             else
                 Console.WriteLine("Login Fail");
+        }
+
+        private string GetLocations() 
+        {
+            using var context = new TourContext(serviceProvider.GetRequiredService<DbContextOptions<TourContext>>());
+            List<Location> locations = context.Locations.ToList();
+            string result = "";
+            foreach (Location location in locations) 
+            {
+                result += "Name: " + location.Name + ",Descriptions: " + location.Description + "\n";
+            }
+            return result;
         }
         private void AddLocations() {
             while (true)
