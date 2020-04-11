@@ -19,8 +19,6 @@ namespace TourWebApp.Models
 
         [Required]
         public TimeSpan MinDuration { get; set; }
-
-        public int LocationSetID { get; set; }
-        public virtual LocationSet LocationSets { get; set; }
+        public virtual IList<Location_Tour> Location_Tour { get; set; }
     }
 }

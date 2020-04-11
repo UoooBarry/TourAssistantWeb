@@ -17,26 +17,28 @@ namespace TourWebApp.Data
         public DbSet<Login> Logins { get; set; }
         public DbSet<Tour> Tours { get; set; }
         public DbSet<TourType> TourTypes { get; set; }
-        public DbSet<LocationSet> LocationSets { get; set; }
+        public DbSet<Location_Tour> LocationSets { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder) //validation
         {
             base.OnModelCreating(builder);
-
+            builder.Entity<Location_Tour>().HasKey(id => new { id.LocationID , id.TourID });
             builder.Entity<Login>().HasCheckConstraint("CH_Login_LoginID", "len(LoginID) = 8").
                 HasCheckConstraint("CH_Login_PasswordHash", "len(PasswordHash) = 64");
             builder.Entity<Tour>().
                 HasOne<TourType>(e => e.Type).WithMany(e => e.Tour).HasForeignKey(e=> e.TourID);
             builder.Entity<Login>().
                 HasOne<User>(e => e.user).WithOne(e => e.Login).HasForeignKey<Login>(e => e.UserID);
-            builder.Entity<Tour>()
-                .HasOne<LocationSet>(e => e.LocationSets)
-                .WithMany(e => e.Tour)
-                .HasForeignKey(e => e.LocationSetID);
-            builder.Entity<Location>()
-                .HasOne<LocationSet>(e => e.LocationSet)
-                .WithMany(e => e.Locations)
-                .HasForeignKey(e => e.LocationSetID);
+            
+            //Tour_Location
+            builder.Entity<Location_Tour>()
+                .HasOne<Tour>(e => e.Tour)
+                .WithMany(e => e.Location_Tour)
+                .HasForeignKey(e => e.TourID);
+            builder.Entity<Location_Tour>()
+                .HasOne<Location>(e => e.Location)
+                .WithMany(e => e.Location_Tour)
+                .HasForeignKey(e => e.LocationID);
         }
     }
 

@@ -41,18 +41,6 @@ Select the application that want to run
                 switch (number)
                 {
                     case 1:
-                        Console.WriteLine("Input an ID");
-                        int ID = int.Parse(Console.ReadLine());
-                        Console.WriteLine("Input an password");
-                        string password = Console.ReadLine();
-                        if (Login(ID, password).Result)
-                        {
-                            Console.WriteLine("true");
-                        }
-                        else 
-                        {//lol
-                            Console.WriteLine("false");
-                        }
                         displayMenu();
                         break;
                     case 2:
@@ -154,7 +142,7 @@ Select the application that want to run
                 Console.WriteLine("Enter duration:");
                 string t = Console.ReadLine();
                 SqlCommand command = getSQLCommand();
-                command.CommandText = "insert into dbo.Locations(TourID, Name, X, Y, Description, MinTime) values(111, @Name, @X, @Y, @Description, @MinTime)";
+                command.CommandText = "insert into dbo.Locations(LocationID, Name, X, Y, Description, MinTime) values(111, @Name, @X, @Y, @Description, @MinTime)";
                 command.Parameters.AddWithValue("Name", tourName);
                 command.Parameters.AddWithValue("X", x);
                 command.Parameters.AddWithValue("Y", y);

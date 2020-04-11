@@ -22,17 +22,12 @@ namespace TourWebApp.Migrations
             modelBuilder.Entity("TourWebApp.Models.Location", b =>
                 {
                     b.Property<int>("LocationID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(300)")
                         .HasMaxLength(300);
-
-                    b.Property<int>("LocationSetID")
-                        .HasColumnType("int");
 
                     b.Property<TimeSpan>("MinTime")
                         .HasColumnType("time");
@@ -50,23 +45,20 @@ namespace TourWebApp.Migrations
 
                     b.HasKey("LocationID");
 
-                    b.HasIndex("LocationSetID");
-
                     b.ToTable("Locations");
                 });
 
-            modelBuilder.Entity("TourWebApp.Models.LocationSet", b =>
+            modelBuilder.Entity("TourWebApp.Models.Location_Tour", b =>
                 {
-                    b.Property<int>("LocationSetID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<int>("LocationID")
+                        .HasColumnType("int");
 
-                    b.Property<string>("LocationSetName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("TourID")
+                        .HasColumnType("int");
 
-                    b.HasKey("LocationSetID");
+                    b.HasKey("LocationID", "TourID");
+
+                    b.HasIndex("TourID");
 
                     b.ToTable("LocationSets");
                 });
@@ -105,9 +97,6 @@ namespace TourWebApp.Migrations
                     b.Property<int>("TourID")
                         .HasColumnType("int");
 
-                    b.Property<int>("LocationSetID")
-                        .HasColumnType("int");
-
                     b.Property<TimeSpan>("MinDuration")
                         .HasColumnType("time");
 
@@ -120,8 +109,6 @@ namespace TourWebApp.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("TourID");
-
-                    b.HasIndex("LocationSetID");
 
                     b.ToTable("Tours");
                 });
@@ -165,11 +152,17 @@ namespace TourWebApp.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("TourWebApp.Models.Location", b =>
+            modelBuilder.Entity("TourWebApp.Models.Location_Tour", b =>
                 {
-                    b.HasOne("TourWebApp.Models.LocationSet", "LocationSet")
-                        .WithMany("Locations")
-                        .HasForeignKey("LocationSetID")
+                    b.HasOne("TourWebApp.Models.Location", "Location")
+                        .WithMany("Location_Tour")
+                        .HasForeignKey("LocationID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TourWebApp.Models.Tour", "Tour")
+                        .WithMany("Location_Tour")
+                        .HasForeignKey("TourID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -185,12 +178,6 @@ namespace TourWebApp.Migrations
 
             modelBuilder.Entity("TourWebApp.Models.Tour", b =>
                 {
-                    b.HasOne("TourWebApp.Models.LocationSet", "LocationSets")
-                        .WithMany("Tour")
-                        .HasForeignKey("LocationSetID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("TourWebApp.Models.TourType", "Type")
                         .WithMany("Tour")
                         .HasForeignKey("TourID")
