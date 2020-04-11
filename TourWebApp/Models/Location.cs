@@ -23,6 +23,8 @@ namespace TourWebApp.Models
         [Required]
         public TimeSpan MinTime { get; set; }
 
+        public int LocationSetID { get; set; }
+        public virtual LocationSet LocationSet { get; set; }
 
     }
 }

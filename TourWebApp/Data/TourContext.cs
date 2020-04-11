@@ -33,6 +33,10 @@ namespace TourWebApp.Data
                 .HasOne<LocationSet>(e => e.LocationSets)
                 .WithMany(e => e.Tour)
                 .HasForeignKey(e => e.LocationSetID);
+            builder.Entity<Location>()
+                .HasOne<LocationSet>(e => e.LocationSet)
+                .WithMany(e => e.Locations)
+                .HasForeignKey(e => e.LocationSetID);
         }
     }
 
