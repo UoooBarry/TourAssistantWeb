@@ -50,7 +50,7 @@ Select the application that want to run
                             Console.WriteLine("true");
                         }
                         else 
-                        {
+                        {//lol
                             Console.WriteLine("false");
                         }
                         break;

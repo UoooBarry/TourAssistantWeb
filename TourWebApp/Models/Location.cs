@@ -23,8 +23,6 @@ namespace TourWebApp.Models
         [Required]
         public TimeSpan MinTime { get; set; }
 
-        [Required]
-        public int TourID { get; set; }
-        public virtual Tour Tour { get; set; }
+
     }
 }

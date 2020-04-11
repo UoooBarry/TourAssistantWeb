@@ -15,7 +15,9 @@ namespace TourWebApp.Models
         [Required, StringLength(50)]
         public string Name { get; set; }
 
+
         [Required]
+        public int LoginID { get; set; }
         public virtual Login Login { get; set; }
 
         [Required]

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TourWebApp.Data;
 
 namespace TourWebApp.Migrations
 {
     [DbContext(typeof(TourContext))]
-    partial class TourContextModelSnapshot : ModelSnapshot
+    [Migration("20200411082453_ReDesignRelations")]
+    partial class ReDesignRelations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -86,9 +88,6 @@ namespace TourWebApp.Migrations
 
                     b.HasKey("LoginID");
 
-                    b.HasIndex("UserID")
-                        .IsUnique();
-
                     b.ToTable("Logins");
 
                     b.HasCheckConstraint("CH_Login_LoginID", "len(LoginID) = 8");
@@ -158,6 +157,9 @@ namespace TourWebApp.Migrations
 
                     b.HasKey("UserID");
 
+                    b.HasIndex("LoginID")
+                        .IsUnique();
+
                     b.ToTable("Users");
                 });
 
@@ -166,15 +168,6 @@ namespace TourWebApp.Migrations
                     b.HasOne("TourWebApp.Models.LocationSet", null)
                         .WithMany("Locations")
                         .HasForeignKey("LocationSetID");
-                });
-
-            modelBuilder.Entity("TourWebApp.Models.Login", b =>
-                {
-                    b.HasOne("TourWebApp.Models.User", "user")
-                        .WithOne("Login")
-                        .HasForeignKey("TourWebApp.Models.Login", "UserID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("TourWebApp.Models.Tour", b =>
@@ -188,6 +181,15 @@ namespace TourWebApp.Migrations
                     b.HasOne("TourWebApp.Models.TourType", "Type")
                         .WithMany("Tour")
                         .HasForeignKey("TourID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("TourWebApp.Models.User", b =>
+                {
+                    b.HasOne("TourWebApp.Models.Login", "Login")
+                        .WithOne("user")
+                        .HasForeignKey("TourWebApp.Models.User", "LoginID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
