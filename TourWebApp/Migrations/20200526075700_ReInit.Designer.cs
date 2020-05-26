@@ -10,8 +10,8 @@ using TourWebApp.Data;
 namespace TourWebApp.Migrations
 {
     [DbContext(typeof(TourContext))]
-    [Migration("20200526072501_Init")]
-    partial class Init
+    [Migration("20200526075700_ReInit")]
+    partial class ReInit
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -97,7 +97,9 @@ namespace TourWebApp.Migrations
             modelBuilder.Entity("TourWebApp.Models.Tour", b =>
                 {
                     b.Property<int>("TourID")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -108,6 +110,8 @@ namespace TourWebApp.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("TourID");
+
+                    b.HasIndex("TourTypeID");
 
                     b.ToTable("Tours");
                 });
@@ -179,7 +183,7 @@ namespace TourWebApp.Migrations
                 {
                     b.HasOne("TourWebApp.Models.TourType", "Type")
                         .WithMany("Tour")
-                        .HasForeignKey("TourID")
+                        .HasForeignKey("TourTypeID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

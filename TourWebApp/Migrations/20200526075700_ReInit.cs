@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace TourWebApp.Migrations
 {
-    public partial class Init : Migration
+    public partial class ReInit : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -54,7 +54,8 @@ namespace TourWebApp.Migrations
                 name: "Tours",
                 columns: table => new
                 {
-                    TourID = table.Column<int>(nullable: false),
+                    TourID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(maxLength: 50, nullable: false),
                     TourTypeID = table.Column<int>(nullable: false)
                 },
@@ -62,8 +63,8 @@ namespace TourWebApp.Migrations
                 {
                     table.PrimaryKey("PK_Tours", x => x.TourID);
                     table.ForeignKey(
-                        name: "FK_Tours_TourTypes_TourID",
-                        column: x => x.TourID,
+                        name: "FK_Tours_TourTypes_TourTypeID",
+                        column: x => x.TourTypeID,
                         principalTable: "TourTypes",
                         principalColumn: "TourTypeID",
                         onDelete: ReferentialAction.Cascade);
@@ -125,6 +126,11 @@ namespace TourWebApp.Migrations
                 table: "Logins",
                 column: "UserID",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Tours_TourTypeID",
+                table: "Tours",
+                column: "TourTypeID");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

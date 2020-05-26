@@ -90,7 +90,9 @@ Select the application that want to run
 2. View Tours
 3. Add Locations
 4. Add Tours
-5. Log out
+5. Remove Tour
+6. Remove Location
+7. Log out
 ");
                     var selection = Console.ReadLine();
                     Console.WriteLine("");
@@ -116,7 +118,12 @@ Select the application that want to run
                             AddTours();
                             break;
                         case 5:
-                            
+                            RemoveTour();
+                            break;
+                        case 6:
+                            RemoveLocatonAsync();
+                            break;
+                        case 7:
                             return;
                         default:
                             Console.WriteLine("Invalid Input");
@@ -139,7 +146,7 @@ Select the application that want to run
              string result = "";
             foreach (Tour tour in tours) 
             {
-                result += "Name: " + tour.Name + ", Type: " + tour.Type.Label + "\n";
+                result += "Name: " + tour.Name + ", Type: " + tour.Type.Label + " ,MinDuration: " + tour.MinDuration + "\n";
             }
             return result;
         }
@@ -151,7 +158,7 @@ Select the application that want to run
             Console.WriteLine("Enter tour name: ");
             string name = Console.ReadLine();
 
-            Console.WriteLine("How many tours you want to add:");
+            Console.WriteLine("How many locations you want to add into the tour:");
             int count = 0;
             try
             {
@@ -166,7 +173,7 @@ Select the application that want to run
             List<Location> locations = new List<Location>();
             for (int i = 0; i < count; i++) 
             {
-                Console.WriteLine($"Add the {i} location's Id");
+                Console.WriteLine($"Add the {i + 1} location's Id");
                 int id = Convert.ToInt32(Console.ReadLine());
                 locations.Add(context.Locations.Find(id));
             }
@@ -174,19 +181,63 @@ Select the application that want to run
             Tour tour = new Tour
             {
                 Name = name,
-                TourTypeID = context.TourTypes.First().TourTypeID //seed item for console app
+                TourTypeID = 1//seed item for console app
             };
+
             List<Location_Tour> lcs = new List<Location_Tour>();
             foreach (Location location in locations) 
             {
-                lcs.Add(new Location_Tour 
+                var Location_Tour = new Location_Tour
                 {
                     TourID = tour.TourID,
                     LocationID = location.LocationID
-                });
+                };
+                context.LocationSets.Add(Location_Tour);
+                lcs.Add(Location_Tour);
             }
             tour.Location_Tour = lcs;
+            tour.MinDuration = tour.caculateMinDuration();
+
             context.Tours.Add(tour);
+            context.SaveChanges();
+        }
+
+        public void RemoveTour() 
+        {
+            using var context = new TourContext(serviceProvider.GetRequiredService<DbContextOptions<TourContext>>());
+            Console.WriteLine("Enter the tour ID you want to remove:");
+            int Id = 0;
+            try
+            {
+                Id = Convert.ToInt32(Console.ReadLine());
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                Id = Convert.ToInt32(Console.ReadLine());
+            }
+
+            context.Tours.Remove(context.Tours.Find(Id));
+            context.SaveChanges();
+        }
+
+        public void RemoveLocatonAsync()
+        {
+            using var context = new TourContext(serviceProvider.GetRequiredService<DbContextOptions<TourContext>>());
+            Console.WriteLine("Enter the tour Location you want to remove:");
+            int Id = 0;
+            try
+            {
+                Id = Convert.ToInt32(Console.ReadLine());
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                Id = Convert.ToInt32(Console.ReadLine());
+            }
+
+            context.LocationSets.RemoveRange(context.LocationSets.Where(e => e.Location.LocationID == Id));
+            context.Locations.Remove(context.Locations.Find(Id));
             context.SaveChanges();
         }
 
@@ -197,7 +248,7 @@ Select the application that want to run
             string result = "";
             foreach (Location location in locations) 
             {
-                result += "Name: " + location.Name + ",Descriptions: " + location.Description + "\n";
+                result += "Id: "+ location.LocationID  + " ,Name: " + location.Name + " ,Descriptions: " + location.Description + "\n";
             }
             return result;
         }

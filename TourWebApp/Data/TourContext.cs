@@ -26,7 +26,7 @@ namespace TourWebApp.Data
             builder.Entity<Login>().HasCheckConstraint("CH_Login_LoginID", "len(LoginID) = 8").
                 HasCheckConstraint("CH_Login_PasswordHash", "len(PasswordHash) = 64");
             builder.Entity<Tour>().
-                HasOne<TourType>(e => e.Type).WithMany(e => e.Tour).HasForeignKey(e=> e.TourID);
+                HasOne<TourType>(e => e.Type).WithMany(e => e.Tour).HasForeignKey(e=> e.TourTypeID);
             builder.Entity<Login>().
                 HasOne<User>(e => e.user).WithOne(e => e.Login).HasForeignKey<Login>(e => e.UserID);
 
