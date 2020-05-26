@@ -106,7 +106,7 @@ Select the application that want to run
                             Console.WriteLine(GetLocations());
                             break;
                         case 2:
-                       
+                            Console.WriteLine(GetTours());
                             break;
                         case 3:
                             AddLocations();
@@ -128,6 +128,19 @@ Select the application that want to run
             }
             else
                 Console.WriteLine("Login Fail");
+        }
+
+
+        public string GetTours()
+        {
+            using var context = new TourContext(serviceProvider.GetRequiredService<DbContextOptions<TourContext>>());
+            List<Tour> tours = context.Tours.ToList();
+             string result = "";
+            foreach (Tour tour in tours) 
+            {
+                result += "Name: " + tour.Name + ", Type: " + tour.Type.Label + "\n";
+            }
+            return result;
         }
 
         private string GetLocations() 
