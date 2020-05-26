@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace TourWebApp.Migrations
 {
-    public partial class AddMigration : Migration
+    public partial class Init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -56,8 +56,7 @@ namespace TourWebApp.Migrations
                 {
                     TourID = table.Column<int>(nullable: false),
                     Name = table.Column<string>(maxLength: 50, nullable: false),
-                    TourTypeID = table.Column<int>(nullable: false),
-                    MinDuration = table.Column<TimeSpan>(nullable: false)
+                    TourTypeID = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {

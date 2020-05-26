@@ -10,8 +10,8 @@ using TourWebApp.Data;
 namespace TourWebApp.Migrations
 {
     [DbContext(typeof(TourContext))]
-    [Migration("20200411141827_AddMigration")]
-    partial class AddMigration
+    [Migration("20200526072501_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -98,9 +98,6 @@ namespace TourWebApp.Migrations
                 {
                     b.Property<int>("TourID")
                         .HasColumnType("int");
-
-                    b.Property<TimeSpan>("MinDuration")
-                        .HasColumnType("time");
 
                     b.Property<string>("Name")
                         .IsRequired()

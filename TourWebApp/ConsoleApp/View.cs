@@ -240,7 +240,7 @@ Select the application that want to run
         }
         protected string getConnectionString()
         {
-            return @"Server=s3673712.database.windows.net;Database=SEPM;uid=s3673712;pwd=Bach12345;MultipleActiveResultSets=true";
+            return @"Server=tourdb.cosjhthqukoc.us-east-1.rds.amazonaws.com, 1433;Database=Tour;uid=admin;pwd=tingting0417;MultipleActiveResultSets=true";
         }
 
     }

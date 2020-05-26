@@ -97,9 +97,6 @@ namespace TourWebApp.Migrations
                     b.Property<int>("TourID")
                         .HasColumnType("int");
 
-                    b.Property<TimeSpan>("MinDuration")
-                        .HasColumnType("time");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(50)")
