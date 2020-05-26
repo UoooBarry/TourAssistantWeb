@@ -42,6 +42,13 @@ namespace TourWebApp.Data
                 }
 
             );
+            context.TourTypes.Add
+             (
+                new TourType
+                {
+                    Label = "Default"
+                }
+             );
 
             context.Locations.AddRange
             (

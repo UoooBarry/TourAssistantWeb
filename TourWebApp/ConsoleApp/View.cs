@@ -5,6 +5,7 @@ using SimpleHashing;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using TourWebApp.Data;
 using TourWebApp.Models;
@@ -112,7 +113,7 @@ Select the application that want to run
                             AddLocations();
                             break;
                         case 4:
-                        
+                            AddTours();
                             break;
                         case 5:
                             
@@ -141,6 +142,52 @@ Select the application that want to run
                 result += "Name: " + tour.Name + ", Type: " + tour.Type.Label + "\n";
             }
             return result;
+        }
+
+        public void AddTours()
+        {
+            using var context = new TourContext(serviceProvider.GetRequiredService<DbContextOptions<TourContext>>());
+
+            Console.WriteLine("Enter tour name: ");
+            string name = Console.ReadLine();
+
+            Console.WriteLine("How many tours you want to add:");
+            int count = 0;
+            try
+            {
+                count = Convert.ToInt32(Console.ReadLine());
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                count = Convert.ToInt32(Console.ReadLine());
+            }
+
+            List<Location> locations = new List<Location>();
+            for (int i = 0; i < count; i++) 
+            {
+                Console.WriteLine($"Add the {i} location's Id");
+                int id = Convert.ToInt32(Console.ReadLine());
+                locations.Add(context.Locations.Find(id));
+            }
+
+            Tour tour = new Tour
+            {
+                Name = name,
+                TourTypeID = context.TourTypes.First().TourTypeID //seed item for console app
+            };
+            List<Location_Tour> lcs = new List<Location_Tour>();
+            foreach (Location location in locations) 
+            {
+                lcs.Add(new Location_Tour 
+                {
+                    TourID = tour.TourID,
+                    LocationID = location.LocationID
+                });
+            }
+            tour.Location_Tour = lcs;
+            context.Tours.Add(tour);
+            context.SaveChanges();
         }
 
         private string GetLocations() 
