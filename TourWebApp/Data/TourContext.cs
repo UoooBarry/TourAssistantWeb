@@ -22,7 +22,6 @@ namespace TourWebApp.Data
         protected override void OnModelCreating(ModelBuilder builder) //validation
         {
             base.OnModelCreating(builder);
-            builder.Entity<Location_Tour>().HasKey(id => new { id.LocationID , id.TourID });
             builder.Entity<Login>().HasCheckConstraint("CH_Login_LoginID", "len(LoginID) = 8").
                 HasCheckConstraint("CH_Login_PasswordHash", "len(PasswordHash) = 64");
             builder.Entity<Tour>().

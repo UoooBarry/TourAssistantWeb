@@ -23,7 +23,7 @@ namespace TourWebApp.Models
 
         public TimeSpan caculateMinDuration() 
         {
-            TimeSpan sum = new TimeSpan();
+            TimeSpan sum = TimeSpan.Zero;
             foreach (Location_Tour lc in Location_Tour) 
             {
                 sum += lc.Location.MinTime;

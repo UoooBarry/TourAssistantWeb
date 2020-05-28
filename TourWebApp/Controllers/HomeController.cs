@@ -1,5 +1,8 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SimpleHashing;
@@ -32,8 +35,19 @@ namespace TourWebApp.Controllers
                 return View(new Login { LoginID = loginID });
             }
 
-            return View();
+            var user = _context.Users.Where(e => e.Login.LoginID == loginID).Single();
+            HttpContext.Session.SetInt32(nameof(Models.User.UserID), Convert.ToInt32(user.UserID));
+            HttpContext.Session.SetString(nameof(Models.User.Role), user.Role);
+            return RedirectToAction("Index", "Locations");
         }
+
+        [Route("LogoutNow")]
+        public IActionResult Logout() 
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("Index", "Home");
+        }
+
         public IActionResult Privacy()
         {
             return View();

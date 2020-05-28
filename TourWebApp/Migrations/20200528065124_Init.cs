@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace TourWebApp.Migrations
 {
-    public partial class ReInit : Migration
+    public partial class Init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -42,7 +42,6 @@ namespace TourWebApp.Migrations
                 {
                     UserID = table.Column<int>(nullable: false),
                     Name = table.Column<string>(maxLength: 50, nullable: false),
-                    LoginID = table.Column<int>(nullable: false),
                     Role = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
@@ -57,7 +56,8 @@ namespace TourWebApp.Migrations
                     TourID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(maxLength: 50, nullable: false),
-                    TourTypeID = table.Column<int>(nullable: false)
+                    TourTypeID = table.Column<int>(nullable: false),
+                    MinDuration = table.Column<TimeSpan>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -96,12 +96,14 @@ namespace TourWebApp.Migrations
                 name: "LocationSets",
                 columns: table => new
                 {
+                    Location_TourID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     TourID = table.Column<int>(nullable: false),
                     LocationID = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_LocationSets", x => new { x.LocationID, x.TourID });
+                    table.PrimaryKey("PK_LocationSets", x => x.Location_TourID);
                     table.ForeignKey(
                         name: "FK_LocationSets_Locations_LocationID",
                         column: x => x.LocationID,
@@ -115,6 +117,11 @@ namespace TourWebApp.Migrations
                         principalColumn: "TourID",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LocationSets_LocationID",
+                table: "LocationSets",
+                column: "LocationID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_LocationSets_TourID",

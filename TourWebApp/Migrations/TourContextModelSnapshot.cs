@@ -15,7 +15,7 @@ namespace TourWebApp.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.2")
+                .HasAnnotation("ProductVersion", "3.1.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -50,13 +50,20 @@ namespace TourWebApp.Migrations
 
             modelBuilder.Entity("TourWebApp.Models.Location_Tour", b =>
                 {
+                    b.Property<int>("Location_TourID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
                     b.Property<int>("LocationID")
                         .HasColumnType("int");
 
                     b.Property<int>("TourID")
                         .HasColumnType("int");
 
-                    b.HasKey("LocationID", "TourID");
+                    b.HasKey("Location_TourID");
+
+                    b.HasIndex("LocationID");
 
                     b.HasIndex("TourID");
 
@@ -137,9 +144,6 @@ namespace TourWebApp.Migrations
             modelBuilder.Entity("TourWebApp.Models.User", b =>
                 {
                     b.Property<int>("UserID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("LoginID")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
