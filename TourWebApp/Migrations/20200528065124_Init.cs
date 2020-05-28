@@ -3,12 +3,28 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace TourWebApp.Migrations
 {
-    public partial class InitCreate : Migration
+    public partial class Init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "TourType",
+                name: "Locations",
+                columns: table => new
+                {
+                    LocationID = table.Column<int>(nullable: false),
+                    Name = table.Column<string>(maxLength: 50, nullable: false),
+                    X = table.Column<float>(nullable: false),
+                    Y = table.Column<float>(nullable: false),
+                    Description = table.Column<string>(maxLength: 300, nullable: false),
+                    MinTime = table.Column<TimeSpan>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Locations", x => x.LocationID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TourTypes",
                 columns: table => new
                 {
                     TourTypeID = table.Column<int>(nullable: false)
@@ -17,40 +33,39 @@ namespace TourWebApp.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TourType", x => x.TourTypeID);
+                    table.PrimaryKey("PK_TourTypes", x => x.TourTypeID);
                 });
 
             migrationBuilder.CreateTable(
-                name: "User",
+                name: "Users",
                 columns: table => new
                 {
-                    UserID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserID = table.Column<int>(nullable: false),
                     Name = table.Column<string>(maxLength: 50, nullable: false),
-                    Discriminator = table.Column<string>(nullable: false)
+                    Role = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_User", x => x.UserID);
+                    table.PrimaryKey("PK_Users", x => x.UserID);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Tour",
+                name: "Tours",
                 columns: table => new
                 {
                     TourID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(maxLength: 50, nullable: false),
-                    TypeTourTypeID = table.Column<int>(nullable: false),
+                    TourTypeID = table.Column<int>(nullable: false),
                     MinDuration = table.Column<TimeSpan>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Tour", x => x.TourID);
+                    table.PrimaryKey("PK_Tours", x => x.TourID);
                     table.ForeignKey(
-                        name: "FK_Tour_TourType_TypeTourTypeID",
-                        column: x => x.TypeTourTypeID,
-                        principalTable: "TourType",
+                        name: "FK_Tours_TourTypes_TourTypeID",
+                        column: x => x.TourTypeID,
+                        principalTable: "TourTypes",
                         principalColumn: "TourTypeID",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -59,8 +74,7 @@ namespace TourWebApp.Migrations
                 name: "Logins",
                 columns: table => new
                 {
-                    LoginID = table.Column<int>(maxLength: 8, nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    LoginID = table.Column<int>(maxLength: 8, nullable: false),
                     PasswordHash = table.Column<string>(maxLength: 64, nullable: false),
                     ActivationStatus = table.Column<bool>(nullable: false),
                     UserID = table.Column<int>(nullable: false)
@@ -71,40 +85,47 @@ namespace TourWebApp.Migrations
                     table.CheckConstraint("CH_Login_LoginID", "len(LoginID) = 8");
                     table.CheckConstraint("CH_Login_PasswordHash", "len(PasswordHash) = 64");
                     table.ForeignKey(
-                        name: "FK_Logins_User_UserID",
+                        name: "FK_Logins_Users_UserID",
                         column: x => x.UserID,
-                        principalTable: "User",
+                        principalTable: "Users",
                         principalColumn: "UserID",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Locations",
+                name: "LocationSets",
                 columns: table => new
                 {
-                    LocationID = table.Column<int>(nullable: false)
+                    Location_TourID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(maxLength: 50, nullable: false),
-                    X = table.Column<float>(nullable: false),
-                    Y = table.Column<float>(nullable: false),
-                    Description = table.Column<string>(maxLength: 300, nullable: false),
-                    MinTime = table.Column<TimeSpan>(nullable: false),
-                    TourID = table.Column<int>(nullable: false)
+                    TourID = table.Column<int>(nullable: false),
+                    LocationID = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Locations", x => x.LocationID);
+                    table.PrimaryKey("PK_LocationSets", x => x.Location_TourID);
                     table.ForeignKey(
-                        name: "FK_Locations_Tour_TourID",
+                        name: "FK_LocationSets_Locations_LocationID",
+                        column: x => x.LocationID,
+                        principalTable: "Locations",
+                        principalColumn: "LocationID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_LocationSets_Tours_TourID",
                         column: x => x.TourID,
-                        principalTable: "Tour",
+                        principalTable: "Tours",
                         principalColumn: "TourID",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Locations_TourID",
-                table: "Locations",
+                name: "IX_LocationSets_LocationID",
+                table: "LocationSets",
+                column: "LocationID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LocationSets_TourID",
+                table: "LocationSets",
                 column: "TourID");
 
             migrationBuilder.CreateIndex(
@@ -114,27 +135,30 @@ namespace TourWebApp.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tour_TypeTourTypeID",
-                table: "Tour",
-                column: "TypeTourTypeID");
+                name: "IX_Tours_TourTypeID",
+                table: "Tours",
+                column: "TourTypeID");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Locations");
+                name: "LocationSets");
 
             migrationBuilder.DropTable(
                 name: "Logins");
 
             migrationBuilder.DropTable(
-                name: "Tour");
+                name: "Locations");
 
             migrationBuilder.DropTable(
-                name: "User");
+                name: "Tours");
 
             migrationBuilder.DropTable(
-                name: "TourType");
+                name: "Users");
+
+            migrationBuilder.DropTable(
+                name: "TourTypes");
         }
     }
 }

@@ -12,5 +12,7 @@ namespace TourWebApp.Models
 
         [Required, StringLength(50)]
         public string Label { get; set; }
+
+        public virtual List<Tour> Tour { get; set; }
     }
 }

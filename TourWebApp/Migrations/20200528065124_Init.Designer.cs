@@ -10,23 +10,21 @@ using TourWebApp.Data;
 namespace TourWebApp.Migrations
 {
     [DbContext(typeof(TourContext))]
-    [Migration("20200303090228_InitCreate")]
-    partial class InitCreate
+    [Migration("20200528065124_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.2")
+                .HasAnnotation("ProductVersion", "3.1.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("TourWebApp.Models.Location", b =>
                 {
                     b.Property<int>("LocationID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -41,9 +39,6 @@ namespace TourWebApp.Migrations
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
-                    b.Property<int>("TourID")
-                        .HasColumnType("int");
-
                     b.Property<float>("X")
                         .HasColumnType("real");
 
@@ -52,18 +47,36 @@ namespace TourWebApp.Migrations
 
                     b.HasKey("LocationID");
 
+                    b.ToTable("Locations");
+                });
+
+            modelBuilder.Entity("TourWebApp.Models.Location_Tour", b =>
+                {
+                    b.Property<int>("Location_TourID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("LocationID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TourID")
+                        .HasColumnType("int");
+
+                    b.HasKey("Location_TourID");
+
+                    b.HasIndex("LocationID");
+
                     b.HasIndex("TourID");
 
-                    b.ToTable("Locations");
+                    b.ToTable("LocationSets");
                 });
 
             modelBuilder.Entity("TourWebApp.Models.Login", b =>
                 {
                     b.Property<int>("LoginID")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasMaxLength(8)
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasMaxLength(8);
 
                     b.Property<bool>("ActivationStatus")
                         .HasColumnType("bit");
@@ -103,14 +116,14 @@ namespace TourWebApp.Migrations
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
-                    b.Property<int>("TypeTourTypeID")
+                    b.Property<int>("TourTypeID")
                         .HasColumnType("int");
 
                     b.HasKey("TourID");
 
-                    b.HasIndex("TypeTourTypeID");
+                    b.HasIndex("TourTypeID");
 
-                    b.ToTable("Tour");
+                    b.ToTable("Tours");
                 });
 
             modelBuilder.Entity("TourWebApp.Models.TourType", b =>
@@ -127,50 +140,38 @@ namespace TourWebApp.Migrations
 
                     b.HasKey("TourTypeID");
 
-                    b.ToTable("TourType");
+                    b.ToTable("TourTypes");
                 });
 
             modelBuilder.Entity("TourWebApp.Models.User", b =>
                 {
                     b.Property<int>("UserID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("UserID");
 
-                    b.ToTable("User");
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("User");
+                    b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("TourWebApp.Models.Admin", b =>
+            modelBuilder.Entity("TourWebApp.Models.Location_Tour", b =>
                 {
-                    b.HasBaseType("TourWebApp.Models.User");
+                    b.HasOne("TourWebApp.Models.Location", "Location")
+                        .WithMany("Location_Tour")
+                        .HasForeignKey("LocationID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasDiscriminator().HasValue("Admin");
-                });
-
-            modelBuilder.Entity("TourWebApp.Models.Assistant", b =>
-                {
-                    b.HasBaseType("TourWebApp.Models.User");
-
-                    b.HasDiscriminator().HasValue("Assistant");
-                });
-
-            modelBuilder.Entity("TourWebApp.Models.Location", b =>
-                {
                     b.HasOne("TourWebApp.Models.Tour", "Tour")
-                        .WithMany("Location")
+                        .WithMany("Location_Tour")
                         .HasForeignKey("TourID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -188,8 +189,8 @@ namespace TourWebApp.Migrations
             modelBuilder.Entity("TourWebApp.Models.Tour", b =>
                 {
                     b.HasOne("TourWebApp.Models.TourType", "Type")
-                        .WithMany()
-                        .HasForeignKey("TypeTourTypeID")
+                        .WithMany("Tour")
+                        .HasForeignKey("TourTypeID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

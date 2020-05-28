@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -8,6 +9,7 @@ namespace TourWebApp.Models
 {
     public class Location
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int LocationID { get; set; }
 
         [Required, StringLength(50)]
@@ -17,14 +19,12 @@ namespace TourWebApp.Models
         [Required]
         public float Y { get; set; }
 
-
         [Required, StringLength(300)]
         public string Description { get; set; }
         [Required]
         public TimeSpan MinTime { get; set; }
 
-        [Required]
-        public int TourID { get; set; }
-        public virtual Tour Tour { get; set; }
+        public virtual IList<Location_Tour> Location_Tour { get; set; }
+
     }
 }

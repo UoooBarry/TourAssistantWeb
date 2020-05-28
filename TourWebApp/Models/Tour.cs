@@ -14,11 +14,22 @@ namespace TourWebApp.Models
         public string Name { get; set; }
 
         [Required]
+        public int TourTypeID { get; set; }
         public virtual TourType Type { get; set; }
 
-        [Required]
+        
         public TimeSpan MinDuration { get; set; }
+        public virtual IList<Location_Tour> Location_Tour { get; set; }
 
-        public virtual List<Location> Location { get; set; }
+        public TimeSpan caculateMinDuration() 
+        {
+            TimeSpan sum = TimeSpan.Zero;
+            foreach (Location_Tour lc in Location_Tour) 
+            {
+                sum += lc.Location.MinTime;
+            }
+
+            return sum;
+        }
     }
 }
