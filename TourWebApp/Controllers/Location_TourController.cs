@@ -47,8 +47,8 @@ namespace TourWebApp.Controllers
                 location_Tour.Location = _context.Locations.Find(location_Tour.LocationID);
                 _context.Add(location_Tour);
                 var tour = _context.Tours.Find(location_Tour.TourID);
-                tour.Location_Tour.Add(location_Tour);  
-                tour.MinDuration = tour.caculateMinDuration();
+                tour.Location_Tour.Add(location_Tour);
+                tour.MinDuration += location_Tour.Location.MinTime;
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
