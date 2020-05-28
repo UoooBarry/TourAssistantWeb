@@ -5,3 +5,6 @@ Project for SEPM course.
 Id: 12345678
 Password: abc123
 Role: Admin
+# Running the release
+Download and unzip the release<br>
+In windows enviroment: run ```debug/netcoreapp3.1/TourWebApp.exe```
