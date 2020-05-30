@@ -22,7 +22,9 @@ namespace TourWebApp.Migrations
             modelBuilder.Entity("TourWebApp.Models.Location", b =>
                 {
                     b.Property<int>("LocationID")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -144,7 +146,9 @@ namespace TourWebApp.Migrations
             modelBuilder.Entity("TourWebApp.Models.User", b =>
                 {
                     b.Property<int>("UserID")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
                         .IsRequired()

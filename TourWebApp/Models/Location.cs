@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 namespace TourWebApp.Models
 {
     public class Location
-    {
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+    {   
+        [Required]
         public int LocationID { get; set; }
 
         [Required, StringLength(50)]

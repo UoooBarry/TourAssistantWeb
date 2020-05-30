@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace TourWebApp.Migrations
 {
-    public partial class Init : Migration
+    public partial class Recreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -11,7 +11,8 @@ namespace TourWebApp.Migrations
                 name: "Locations",
                 columns: table => new
                 {
-                    LocationID = table.Column<int>(nullable: false),
+                    LocationID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(maxLength: 50, nullable: false),
                     X = table.Column<float>(nullable: false),
                     Y = table.Column<float>(nullable: false),
@@ -40,7 +41,8 @@ namespace TourWebApp.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    UserID = table.Column<int>(nullable: false),
+                    UserID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(maxLength: 50, nullable: false),
                     Role = table.Column<string>(nullable: false)
                 },

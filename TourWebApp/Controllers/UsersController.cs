@@ -58,7 +58,7 @@ namespace TourWebApp.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("UserID,Name,Role")] User user, int LoginId, string Password)
+        public async Task<IActionResult> Create([Bind("Name,Role")] User user, int LoginId, string Password)
         {
             if (LoginId < 10000000) 
             {

@@ -19,29 +19,27 @@ namespace TourWebApp.Data
             context.Users.AddRange(
             new User
             {
-                UserID = 2000,
                 Name = "Test user",
                 Role = "Admin"
             },
             new User
             {
-                UserID = 2100,
                 Name = "Barry Huang",
                 Role = "Admin"
             }
             );
 
-            context.Logins.AddRange
+          /*  context.Logins.AddRange
             (
                 new Login
                 {
                     LoginID = 12345678,
                     PasswordHash = "YBNbEL4Lk8yMEWxiKkGBeoILHTU7WZ9n8jJSy8TNx0DAzNEFVsIVNRktiQV+I8d2",
                     ActivationStatus = true,
-                    UserID = 2100
+                    UserID = context.Users.FirstOrDefault().UserID
                 }
 
-            );
+            );*/
             context.TourTypes.Add
              (
                 new TourType
@@ -54,7 +52,6 @@ namespace TourWebApp.Data
             (
                 new Location
                 {
-                    LocationID = 2,
                     Name = "Music ground",
                     X = 3,
                     Y = 4,
@@ -64,7 +61,6 @@ namespace TourWebApp.Data
                 },
                 new Location
                 {
-                    LocationID = 1,
                     Name = "Photo area",
                     X = 3,
                     Y = 4,

@@ -56,7 +56,7 @@ namespace TourWebApp.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("LocationID,Name,X,Y,Description,MinTime")] Location location)
+        public async Task<IActionResult> Create([Bind("Name,X,Y,Description,MinTime")] Location location)
         {
             if (ModelState.IsValid)
             {
