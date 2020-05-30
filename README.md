@@ -7,4 +7,4 @@ Password: abc123
 Role: Admin
 # Running the release
 Download and unzip the release<br>
-In windows enviroment: run ```debug/netcoreapp3.1/TourWebApp.exe```
+In windows enviroment: run ```netcoreapp3.1\TourWebApp.exe```
