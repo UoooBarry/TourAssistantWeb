@@ -6,7 +6,7 @@
 
 <h1>Create</h1>
 
-<h4>User</h4>
+<h4>Assistant User</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -22,20 +22,27 @@
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
-            <input type="hidden" asp-for="Role" value="Assistant" class="form-control" />
-            <span asp-validation-for="Role" class="text-danger"></span>
+            <div class="form-group">
+                <label asp-for="Role" class="control-label"></label>
+                <select asp-for="Role" class="form-control">
+                    <option value="Assistant">Assistant</option>
+                    <option value="Admin">Admin</option>
+                </select>
+                <span asp-validation-for="Role" class="text-danger"></span>
+            </div>
             <div class="form-group">
                 <label for="LoginId" class="control-label">Login ID</label>
-                <input type="number" name="LoginId" id="LoginId" minlength="8" class="form-control" />
+                <input type="number" name="LoginId" id="LoginId" minlength="8" maxlength="8" class="form-control" />
             </div>
             <div class="form-group">
                 <label for="Password" class="control-label">Login Password</label>
-                <input name="Password" id="Password" class="form-control" />
+                <input type="password" name="Password" id="Password" class="form-control" />
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
+        @Html.ValidationMessage("CreateFailed", new { @class = "text-danger" })
     </div>
 </div>
 
