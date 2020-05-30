@@ -33,11 +33,11 @@
                     @Html.DisplayFor(modelItem => item.MinDuration)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.TourID">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.TourID">Details</a> |
-                    <a asp-action="Index" asp-controller="Location_Tour" asp-route-id="@item.TourID">Locations</a> |
-                    <a asp-action="Copy" asp-route-id="@item.TourID">Copy to new</a> |
-                    <a asp-action="Delete" asp-route-id="@item.TourID">Delete</a>
+                    <a asp-action="Edit" asp-controller="Tours" asp-route-id="@item.TourID">Edit</a> |
+                    <a asp-action="Details" asp-controller="Tours"  asp-route-id="@item.TourID">Details</a> |
+                    <a asp-action="Index"  asp-controller="Location_Tour" asp-route-id="@item.TourID">Locations</a> |
+                    <a asp-action="Copy" asp-controller="Tours"  asp-route-id="@item.TourID">Copy to new</a> |
+                    <a asp-action="Delete" asp-controller="Tours"  asp-route-id="@item.TourID">Delete</a>
                 </td>
             </tr>
         }
