@@ -64,16 +64,21 @@ namespace TourWebApp.Controllers
             {
                 _context.Add(user);
                 await _context.SaveChangesAsync();
+                var login = new Login
+                {
+                    LoginID = LoginId,
+                    ActivationStatus = true,
+                    PasswordHash = PBKDF2.Hash(Password),
+                    UserID = user.UserID
+                };
+                _context.Add(login);
+                user.Login = login;
+                _context.Update(user);
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
 
-            var login = new Login 
-            {
-                LoginID = LoginId,
-                PasswordHash = PBKDF2.Hash(Password),
-                UserID = user.UserID
-            };
-
+            
             return View(user);
         }
 
@@ -98,7 +103,7 @@ namespace TourWebApp.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("UserID,Name,Role")] User user)
+        public async Task<IActionResult> Edit(int id, [Bind("UserID,Name,Role")] User user, bool ActivationStatus)
         {
             if (id != user.UserID)
             {
@@ -109,6 +114,9 @@ namespace TourWebApp.Controllers
             {
                 try
                 {
+                    var login = _context.Logins.Where(e => e.UserID == id).Single();
+                    login.ActivationStatus = ActivationStatus;
+                    _context.Update(login);
                     _context.Update(user);
                     await _context.SaveChangesAsync();
                 }
