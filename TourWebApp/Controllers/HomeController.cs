@@ -36,7 +36,11 @@ namespace TourWebApp.Controllers
                 ModelState.AddModelError("LoginFailed", "Login failed, please try again.");
                 return View(new Login { LoginID = loginID });
             }
-
+            if (login.ActivationStatus == false)
+            {
+                ModelState.AddModelError("LoginFailed", "Login failed, your account is blocked");
+                return View(new Login { LoginID = loginID });
+            }
             var user = _context.Users.Where(e => e.Login.LoginID == loginID).Single();
             HttpContext.Session.SetInt32(nameof(Models.User.UserID), Convert.ToInt32(user.UserID));
             HttpContext.Session.SetString(nameof(Models.User.Role), user.Role);

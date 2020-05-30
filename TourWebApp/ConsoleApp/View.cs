@@ -63,7 +63,7 @@ Select the application that want to run
         {
             using var context = new TourContext(serviceProvider.GetRequiredService<DbContextOptions<TourContext>>());
             var login = await context.Logins.FindAsync(ID);
-            if (login == null || !PBKDF2.Verify(login.PasswordHash, password))
+            if (login == null || !PBKDF2.Verify(login.PasswordHash, password) || login.ActivationStatus == false)
             {
                 return false;
             }
