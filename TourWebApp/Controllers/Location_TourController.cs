@@ -37,7 +37,6 @@ namespace TourWebApp.Controllers
 
         // POST: Location_Tour/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Location_TourID,TourID,LocationID")] Location_Tour location_Tour)
@@ -50,7 +49,7 @@ namespace TourWebApp.Controllers
                 tour.Location_Tour.Add(location_Tour);
                 tour.MinDuration += location_Tour.Location.MinTime;
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index), location_Tour.TourID);
+                return RedirectToAction("Index", "Tours");
             }
             ViewData["LocationID"] = new SelectList(_context.Locations, "LocationID", "Name", location_Tour.LocationID);
             ViewData["TourID"] = new SelectList(_context.Tours, "TourID", "Name", location_Tour.TourID);
@@ -87,7 +86,7 @@ namespace TourWebApp.Controllers
             tour.MinDuration -= location_Tour.Location.MinTime;
             _context.LocationSets.Remove(location_Tour);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index", "Tours");
         }
 
         private bool Location_TourExists(int id)
