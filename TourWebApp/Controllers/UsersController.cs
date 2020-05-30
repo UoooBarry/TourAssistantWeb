@@ -25,7 +25,7 @@ namespace TourWebApp.Controllers
         // GET: Users
         public IActionResult Index()
         {
-            var users = _context.Users.Where(e => e.Role == "Assistant");
+            var users = _context.Users.ToList();
             return View(users);
         }
 
@@ -60,6 +60,11 @@ namespace TourWebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("UserID,Name,Role")] User user, int LoginId, string Password)
         {
+            if (LoginId < 10000000) 
+            {
+                ModelState.AddModelError("CreateFailed", "Wrong insetion, length of loginID too short.");
+            }
+
             if (ModelState.IsValid)
             {
                 _context.Add(user);
