@@ -9,7 +9,7 @@ namespace TourWebApp.Models
 {
     public class User
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [Required]
         public int UserID {get;set;}
 
         [Required, StringLength(50)]
