@@ -21,9 +21,9 @@ namespace TourWebApp.Controllers
         }
 
         // GET: Location_Tour
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? id)
         {
-            var tourContext = _context.LocationSets.Include(l => l.Location).Include(l => l.Tour);
+            var tourContext = _context.LocationSets.Where(e => e.TourID == id);
             return View(await tourContext.ToListAsync());
         }
 
@@ -50,7 +50,7 @@ namespace TourWebApp.Controllers
                 tour.Location_Tour.Add(location_Tour);
                 tour.MinDuration += location_Tour.Location.MinTime;
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), location_Tour.TourID);
             }
             ViewData["LocationID"] = new SelectList(_context.Locations, "LocationID", "Name", location_Tour.LocationID);
             ViewData["TourID"] = new SelectList(_context.Tours, "TourID", "Name", location_Tour.TourID);
