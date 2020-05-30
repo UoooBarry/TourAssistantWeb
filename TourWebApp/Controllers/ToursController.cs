@@ -23,10 +23,10 @@ namespace TourWebApp.Controllers
         }
 
         // GET: Tours
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var tourContext = _context.Tours.Include(t => t.Type);
-            return View(await tourContext.ToListAsync());
+            ViewData["TourTypeID"] = new SelectList(_context.TourTypes, "TourTypeID", "Label");
+            return View();
         }
 
         // GET: Tours/Details/5
@@ -75,7 +75,6 @@ namespace TourWebApp.Controllers
                 var lcs = _context.LocationSets.Where(e => e.TourID == e.TourID).ToList(); //find the target location sets
                 foreach (var lc in lcs) //for each location in list
                 {
-                    Console.WriteLine(lc.Location.Name);
                     var locationTour = new Location_Tour
                     {
                         LocationID = lc.Location.LocationID,
