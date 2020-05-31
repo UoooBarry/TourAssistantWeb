@@ -8,3 +8,6 @@ Role: Admin
 # Running the release
 Download and unzip the release<br>
 In windows enviroment: run ```netcoreapp3.1\TourWebApp.exe```
+# Links
+<a href="https://github.com/UoooBarry/TourAssistantWeb/">Github</a>
+
