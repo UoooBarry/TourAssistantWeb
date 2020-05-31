@@ -23,9 +23,9 @@ namespace TourWebApp
                  try
                  {
                      SeedItems.Initialize(services); //Insert seed items to database
-                     //View app = new View(services);
-                     //app.Display();
-                 }
+                    View app = new View(services);
+                    app.Display();
+                }
                  catch (Exception ex)
                  {
                      var logger = services.GetRequiredService<ILogger<Program>>();

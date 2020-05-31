@@ -266,7 +266,7 @@ Select the application that want to run
                 Console.WriteLine("Enter duration:");
                 string t = Console.ReadLine();
                 SqlCommand command = getSQLCommand();
-                command.CommandText = "insert into dbo.Locations(LocationID, Name, X, Y, Description, MinTime) values(111, @Name, @X, @Y, @Description, @MinTime)";
+                command.CommandText = "insert into dbo.Locations(Name, X, Y, Description, MinTime) values(@Name, @X, @Y, @Description, @MinTime)";
                 command.Parameters.AddWithValue("Name", tourName);
                 command.Parameters.AddWithValue("X", x);
                 command.Parameters.AddWithValue("Y", y);
