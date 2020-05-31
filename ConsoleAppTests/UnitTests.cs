@@ -105,24 +105,16 @@ namespace ConsoleAppTests
                 Role = "Admin"
             };
 
-            Login login = new Login
-            {
-                LoginID = 12345678,
-                PasswordHash = "YBNbEL4Lk8yMEWxiKkGBeoILHTU7WZ9n8jJSy8TNx0DAzNEFVsIVNRktiQV+I8d2",
-                ActivationStatus = true,
-                UserID = user.UserID
-            };
-
             Assert.Equal("Test", user.Name);
         }
 
         [Fact]
-        public void UserPasswordDigestShouldMatch()
+        public void LoginPasswordShouldMatchUser()
         {
             User user = new User
             {
                 Name = "Test",
-                Role = "Admin"
+                Role = "Admin",
             };
 
             Login login = new Login
@@ -130,10 +122,13 @@ namespace ConsoleAppTests
                 LoginID = 12345678,
                 PasswordHash = "YBNbEL4Lk8yMEWxiKkGBeoILHTU7WZ9n8jJSy8TNx0DAzNEFVsIVNRktiQV+I8d2",
                 ActivationStatus = true,
-                UserID = user.UserID
+                UserID = user.UserID,
+                user = user
             };
-
+           user.Login = login;
+           
            Assert.True(PBKDF2.Verify(login.PasswordHash, "abc123"));
+           Assert.Equal("Test", login.user.Name);
         }
 
     }
