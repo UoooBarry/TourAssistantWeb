@@ -58,6 +58,24 @@ namespace ConsoleAppTests
 
         }
 
+        [Fact]
+        public async Task Post_DeactivateAccount()
+        {
+            // Arrange
+            var client = _factory.CreateClient();
+
+            // Login with correct user
+            var response = await client.PostAsync("/Locations", new JsonContent(new { loginID = 12345678, password = "abc123" }));
+
+            // Assert
+            response.EnsureSuccessStatusCode(); // Status Code 200-299
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            var editResponse = await client.PostAsync("Users/Edit/5", new JsonContent(new { ActivationStatus = false }));
+
+            // Edit succesfully
+            Assert.Equal(HttpStatusCode.OK, editResponse.StatusCode);
+
+        }
 
         [Fact]
         public async Task Post_CopyLocations()
