@@ -62,16 +62,13 @@ namespace ConsoleAppTests
             Assert.Equal("Test place", location.Name);
         }
         [Fact]
-        public void AddNewUser()
+        public void AddNewTourType()
         {
-            var user = new User
+            var locationType = new TourType 
             {
-                UserID = 1,
-                Name = "test name",
-                Role = "admin"
+                Label = "Tech"
             };
-            Assert.Equal(1, user.UserID);
-            Assert.Equal(user.Name, defaultAccount.Name);
+            Assert.Equal("Tech", locationType.Label);
         }
 
         [Fact]
