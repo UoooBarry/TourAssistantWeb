@@ -8,11 +8,13 @@ using Xunit;
 
 namespace ConsoleAppTests
 {
-    public class Sprint1UnitTests
+    public class UnitTests
     {
         public Location defaultLocation;
         public TourType defaultTourType;
-        public Sprint1UnitTests()
+        public User defaultAccount;
+        public Login defaultLogin;
+        public UnitTests()
         {
             defaultLocation = new Location
             {
@@ -27,6 +29,20 @@ namespace ConsoleAppTests
             defaultTourType = new TourType
             {
                 Label = "Default"
+            };
+            defaultAccount = new User
+            {
+                UserID = 1,
+                Name = "test name",
+                Role = "admin"
+
+            };
+            defaultLogin = new Login
+            {
+                UserID = 1,
+                LoginID = 123456,
+                PasswordHash = "YBNbEL4Lk8yMEWxiKkGBeoILHTU7WZ9n8jJSy8TNx0DAzNEFVsIVNRktiQV+I8d2",
+                ActivationStatus = true
             };
         }
 
@@ -44,6 +60,18 @@ namespace ConsoleAppTests
            };
             Assert.Equal(9, location.LocationID);
             Assert.Equal("Test place", location.Name);
+        }
+        [Fact]
+        public void AddNewUser()
+        {
+            var user = new User
+            {
+                UserID = 1,
+                Name = "test name",
+                Role = "admin"
+            };
+            Assert.Equal(1, user.UserID);
+            Assert.Equal(user.Name, defaultAccount.Name);
         }
 
         [Fact]
