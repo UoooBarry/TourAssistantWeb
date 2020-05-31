@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Razor.Language;
+using SimpleHashing;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -65,6 +66,46 @@ namespace ConsoleAppTests
             Assert.Equal("Default", tour.Type.Label);
             Assert.Equal(lcs, tour.Location_Tour);
             Assert.True(tour.Location_Tour.Count > 0);
+        }
+
+        [Fact]
+        public void AddNewUsers() 
+        {
+            User user = new User
+            {
+                Name = "Test",
+                Role = "Admin"
+            };
+
+            Login login = new Login
+            {
+                LoginID = 12345678,
+                PasswordHash = "YBNbEL4Lk8yMEWxiKkGBeoILHTU7WZ9n8jJSy8TNx0DAzNEFVsIVNRktiQV+I8d2",
+                ActivationStatus = true,
+                UserID = user.UserID
+            };
+
+            Assert.Equal("Test", user.Name);
+        }
+
+        [Fact]
+        public void UserPasswordDigestShouldMatch()
+        {
+            User user = new User
+            {
+                Name = "Test",
+                Role = "Admin"
+            };
+
+            Login login = new Login
+            {
+                LoginID = 12345678,
+                PasswordHash = "YBNbEL4Lk8yMEWxiKkGBeoILHTU7WZ9n8jJSy8TNx0DAzNEFVsIVNRktiQV+I8d2",
+                ActivationStatus = true,
+                UserID = user.UserID
+            };
+
+           Assert.True(PBKDF2.Verify(login.PasswordHash, "abc123"));
         }
 
     }
